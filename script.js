@@ -580,7 +580,7 @@ async function exportToPng(target, filename) {
     const isT = elements.transparentToggle?.checked || false;
     try {
         const canvas = await html2canvas(target, {
-            scale: 3,
+            scale: 2,
             backgroundColor: isT ? null : currentState.bgColor,
             onclone: (doc) => {
                 const p = doc.getElementById('puzzle-card'), a = doc.getElementById('answer-card');
