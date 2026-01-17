@@ -441,7 +441,7 @@ function renderScramble(words) {
         do { scrambled = solution.split('').sort(() => 0.5 - Math.random()).join(''); } while (scrambled === solution && solution.length > 1);
         const row = document.createElement('div');
         row.className = "flex items-center gap-12";
-        row.innerHTML = `<div class="flex-1 text-center text-slate-800 font-bold italic text-4xl min-h-[60px] flex items-center justify-center gap-6"><span class="text-5xl">${WORD_MAP[word] || "✨"}</span><span>${scrambled}</span></div><div class="flex-[1.5] border-b-2 border-slate-400 h-16"></div>`;
+        row.innerHTML = `<div class="flex-1 flex items-center justify-start gap-8"><span class="text-6xl">${WORD_MAP[word] || "✨"}</span><span class="text-slate-800 font-bold italic text-4xl tracking-widest">${scrambled}</span></div><div class="flex-1 h-14 border-b-4 border-slate-300 border-dashed relative top-2"></div>`;
         container.appendChild(row);
         addAnswerItem(`${i + 1}. ${scrambled} = ${solution}`);
     });
@@ -496,7 +496,7 @@ function renderSpyCode(words) {
     words.slice(0, 5).forEach(word => {
         const row = document.createElement('div'); row.className = "flex flex-wrap gap-4 justify-center";
         word.toUpperCase().split("").forEach(char => {
-            row.innerHTML += `<div class="flex flex-col items-center gap-2"><div class="code-tile w-14 h-14 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center font-black text-2xl">${cipher[char]}</div><div class="w-14 h-14 border-2 border-dotted border-slate-300 rounded-2xl flex items-center justify-center font-black text-indigo-500 text-2xl">${hints.includes(char) ? char : ""}</div></div>`;
+            row.innerHTML += `<div class="flex flex-col items-center gap-2"><div class="code-tile w-14 h-14 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center font-black text-2xl shadow-sm">${cipher[char]}</div><div class="w-14 h-14 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center bg-slate-50"></div></div>`;
         });
         container.appendChild(row);
     });
