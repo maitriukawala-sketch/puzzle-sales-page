@@ -474,7 +474,7 @@ function renderVowels(words) {
             if (toMask.includes(idx)) {
                 // Improved writing line style
                 const s = document.createElement('span');
-                s.className = "w-10 border-b-4 border-slate-400 mx-1 h-10 inline-block";
+                s.className = "w-16 border-b-4 border-slate-400 mx-2 h-10 inline-block";
                 display.appendChild(s);
             } else {
                 display.appendChild(document.createTextNode(c));
