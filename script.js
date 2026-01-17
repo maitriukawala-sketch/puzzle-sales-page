@@ -552,18 +552,70 @@ function renderWordSearch(words) {
 }
 
 function renderRiddles(theme, level) {
+    const themeSentence = SENTENCES[theme];
+
+    // If we have theme sentences, turn this into a "Secret Message" (Cryptogram) puzzle
+    if (themeSentence) {
+        elements.cardTitle.innerText = "Secret Message";
+        const container = document.createElement('div');
+        container.className = "w-full space-y-8 mt-6 px-6";
+
+        // Generate Cipher Key
+        const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const shuffled = alpha.split('').sort(() => 0.5 - Math.random()).join('');
+        const cipher = {};
+        const reverseCipher = {};
+        alpha.split('').forEach((char, i) => {
+            cipher[char] = shuffled[i];
+            reverseCipher[shuffled[i]] = char;
+        });
+
+        // Show Decoder Key (Essential for kids to solve it!)
+        const keyBox = document.createElement('div');
+        keyBox.className = "bg-slate-100 p-4 rounded-xl border-2 border-slate-200 flex flex-wrap justify-center gap-2 mb-8";
+        alpha.split('').forEach(char => {
+            keyBox.innerHTML += `<div class="flex flex-col items-center bg-white border border-slate-300 rounded px-2 py-1 min-w-[30px]"><span class="text-xs text-slate-400 font-bold">${char}</span><span class="text-lg font-black text-slate-800">${cipher[char]}</span></div>`;
+        });
+        container.appendChild(keyBox);
+
+        // Render Sentences
+        const selectedSentences = themeSentence.sort(() => 0.5 - Math.random()).slice(0, 2);
+        selectedSentences.forEach((s, i) => {
+            const original = s.toUpperCase();
+            const encrypted = original.split('').map(c => cipher[c] || c).join(''); // Keep spaces/punctuation
+
+            const item = document.createElement('div');
+            item.className = "p-8 bg-blue-50 rounded-[32px] border-2 border-blue-100 shadow-sm relative";
+            item.innerHTML = `
+                <div class="text-xs font-black text-blue-300 uppercase mb-4 tracking-widest">Message #${i + 1}</div>
+                <div class="text-3xl font-bold text-slate-700 leading-normal tracking-wide mb-6 font-mono bg-white p-4 rounded-xl border border-blue-100 text-center">${encrypted}</div>
+                <div class="space-y-2">
+                    <div class="flex gap-2 justify-center flex-wrap">
+                       ${encrypted.split('').map(c =>
+                /[A-Z]/.test(c)
+                    ? `<div class="flex flex-col items-center gap-1"><div class="w-8 h-8 border-b-4 border-slate-300"></div><div class="text-sm font-bold text-slate-400">${c}</div></div>`
+                    : `<div class="w-4"></div>` // Space
+            ).join('')}
+                    </div>
+                </div>
+            `;
+            container.appendChild(item);
+            addAnswerItem(`${i + 1}. ${original}`);
+        });
+        elements.cardContent.appendChild(container);
+        return;
+    }
+
+    // Default Riddle Logic (Generic Riddles)
     elements.cardTitle.innerText = "Riddle Master";
     const container = document.createElement('div');
     container.className = "w-full space-y-12 mt-12 px-6";
-    let riddleList = RIDDLES_FALLBACK;
-    const themeSentence = SENTENCES[theme];
-    if (themeSentence) {
-        riddleList = themeSentence.map(s => ({ q: "Decode this secret sentence!", a: s.toUpperCase() }));
-    }
+    let riddleList = RIDDLES; // Use the imported RIDDLES constant
+
     riddleList.slice(0, 3).forEach((rid, i) => {
         const item = document.createElement('div');
-        item.className = "p-10 bg-blue-50 rounded-[40px] border-2 border-blue-100 flex gap-8 items-center shadow-sm relative";
-        item.innerHTML = `<div class="text-6xl">💡</div><div class="flex-1"><div class="text-xs font-black text-blue-300 uppercase mb-2 tracking-widest">Puzzle #${i + 1}</div><div class="text-2xl font-bold text-slate-700 leading-tight mb-6">${rid.q}</div><div class="border-b-4 border-dotted border-blue-200 h-16 w-full italic text-blue-100 flex items-end pb-2">Your answer...</div></div>`;
+        item.className = "p-10 bg-emerald-50 rounded-[40px] border-2 border-emerald-100 flex gap-8 items-center shadow-sm relative";
+        item.innerHTML = `<div class="text-6xl">🤔</div><div class="flex-1"><div class="text-xs font-black text-emerald-300 uppercase mb-2 tracking-widest">Riddle #${i + 1}</div><div class="text-2xl font-bold text-slate-700 leading-tight mb-6">${rid.q}</div><div class="border-b-4 border-dotted border-emerald-200 h-16 w-full italic text-emerald-100 flex items-end pb-2">Your answer...</div></div>`;
         container.appendChild(item);
         addAnswerItem(`${i + 1}. ${rid.a}`);
     });
