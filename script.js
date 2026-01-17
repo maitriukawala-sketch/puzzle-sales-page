@@ -476,7 +476,8 @@ function renderScramble(words) {
 function renderVowels(words) {
     elements.cardTitle.innerText = "Vowel Vanisher";
     const container = document.createElement('div');
-    container.className = "grid grid-cols-2 gap-x-12 gap-y-16 w-full mt-12";
+    // FORCE SINGLE COLUMN: Solves the "space" issue permanently. 
+    container.className = "grid grid-cols-1 gap-y-6 w-full mt-6 px-4";
     const vArr = ['A', 'E', 'I', 'O', 'U', 'Y'];
     words.forEach((word, i) => {
         const solution = word.toUpperCase();
@@ -486,20 +487,29 @@ function renderVowels(words) {
         let maskCount = Math.max(1, Math.ceil(vIdx.length * maskProb));
         if (maskCount >= vIdx.length && vIdx.length > 1 && currentState.ageGroup !== '11-13') maskCount = vIdx.length - 1;
         let toMask = vIdx.sort(() => 0.5 - Math.random()).slice(0, maskCount);
-        const wrap = document.createElement('div');
-        // Changed to flex row layout to prevent overlap and improve readability
-        wrap.className = "bg-white p-6 rounded-[24px] border-2 border-slate-100 shadow-sm flex items-center gap-6";
 
-        // Icon is now a static flex item, not absolute
+        const wrap = document.createElement('div');
+        // Simple, full-width container for everyone
+        wrap.className = `bg-white p-4 rounded-[24px] border-2 border-slate-100 shadow-sm flex items-center gap-6`;
+
+        // Static Icon
         wrap.innerHTML = `<span class="text-6xl min-w-[80px] text-center">${WORD_MAP[word] || "✨"}</span>`;
 
+        // Adaptive Font Sizing to ensure "whole word visible"
+        let fontSize = "text-5xl";
+        if (solution.length > 6) fontSize = "text-4xl";
+        if (solution.length > 9) fontSize = "text-3xl";
+
         const display = document.createElement('div');
-        display.className = "flex-1 text-4xl font-black text-slate-800 tracking-widest flex items-center justify-center h-16 bg-slate-50 rounded-xl px-4";
+        // flex-wrap is critical here. If it's STILL too long, it will wrap to the next line instead of cutting off.
+        display.className = `flex-1 ${fontSize} font-black text-slate-800 tracking-widest flex flex-wrap items-center justify-start min-h-[5rem] bg-slate-50 rounded-xl px-6 py-4`;
+
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // Improved writing line style
+                // Adaptive blank size
+                const widthClass = solution.length > 9 ? 'w-8 mx-1' : 'w-12 mx-2';
                 const s = document.createElement('span');
-                s.className = "w-16 border-b-4 border-slate-400 mx-2 h-10 inline-block";
+                s.className = `${widthClass} border-b-4 border-slate-400 h-10 inline-block mb-1`;
                 display.appendChild(s);
             } else {
                 display.appendChild(document.createTextNode(c));
