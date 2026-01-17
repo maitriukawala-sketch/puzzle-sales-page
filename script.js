@@ -506,11 +506,13 @@ function renderVowels(words) {
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // Adaptive blank size with VISIBLE background to ensure user sees the "puzzle" aspect
+                // Adaptive blank size with VISIBLE background and prevent shrinking
+                // Added shrink-0 to prevent collapse in flex container
+                // Added innerHTML "&nbsp;" so it has physical content
                 const widthClass = solution.length > 9 ? 'w-10 mx-1' : 'w-14 mx-2';
                 const s = document.createElement('span');
-                // Added bg-indigo-50 and increased border visibility
-                s.className = `${widthClass} h-12 border-b-4 border-indigo-400 bg-indigo-50 rounded-lg inline-block align-middle`;
+                s.className = `${widthClass} h-12 border-b-4 border-indigo-500 bg-indigo-100 rounded-lg inline-block align-middle shrink-0 flex items-end justify-center`;
+                s.innerHTML = "&nbsp;";
                 display.appendChild(s);
             } else {
                 display.appendChild(document.createTextNode(c));
