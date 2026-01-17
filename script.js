@@ -599,9 +599,14 @@ async function exportToPng(target, filename) {
             link.download = safeName;
             link.href = url;
             document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+
+            // Delay click to ensure browser registers the download attribute
+            setTimeout(() => {
+                link.click();
+                document.body.removeChild(link);
+                // Delay revoke to ensure download starts before URL is lost
+                setTimeout(() => URL.revokeObjectURL(url), 2000);
+            }, 100);
         }, 'image/png');
 
     } catch (e) {
