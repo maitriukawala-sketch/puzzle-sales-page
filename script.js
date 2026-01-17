@@ -540,10 +540,14 @@ function renderVowels(words) {
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // CLASSIC BLANK LINE STYLE: Transparent bg, PURE BLACK bottom border
-                const widthClass = solution.length > 9 ? 'w-14 mx-2' : 'w-24 mx-4';
+                // VISIBLY THICK BLACK LINE (Inline styles to force visibility)
                 const s = document.createElement('span');
-                s.className = `${widthClass} h-12 border-b-4 border-black bg-transparent rounded-none inline-block align-middle shrink-0 flex items-end justify-center`;
+                // Using explicit pixel values to ensure "more space" and "visible black lines"
+                s.style.display = 'inline-block';
+                s.style.width = solution.length > 9 ? '50px' : '100px'; // Much wider
+                s.style.height = '60px';
+                s.style.borderBottom = '6px solid #000000'; // Pure black, thick line
+                s.style.margin = '0 15px'; // More space around the blank
                 s.innerHTML = "&nbsp;";
                 display.appendChild(s);
             } else {
