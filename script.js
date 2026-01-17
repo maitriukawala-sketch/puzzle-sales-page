@@ -474,14 +474,34 @@ function renderScramble(words) {
 }
 
 // Helper to get icon or fallback
+// Helper to get icon or fallback
 function getIcon(word) {
+    if (!word) return "✨";
     if (WORD_MAP[word]) return WORD_MAP[word];
-    // Specific heuristics for common typos or plurals
-    if (word.toLowerCase().endsWith('s') && WORD_MAP[word.slice(0, -1)]) return WORD_MAP[word.slice(0, -1)];
 
-    // Rotating fallback icons so it's not always sparkles
+    // Fuzzy Match: Check against all keys
+    const lowerInput = word.toLowerCase();
+    const keys = Object.keys(WORD_MAP);
+
+    // 1. Check for Plural 's'
+    if (lowerInput.endsWith('s') && WORD_MAP[word.slice(0, -1)]) return WORD_MAP[word.slice(0, -1)];
+
+    // 2. Fuzzy match: Starts with (min 4 chars) to catch "Rhinocerio" -> "Rhinoceros"
+    for (const key of keys) {
+        const lowerKey = key.toLowerCase();
+        if (lowerInput.length >= 4 && lowerKey.length >= 4) {
+            if (lowerInput.startsWith(lowerKey.slice(0, 4)) || lowerKey.startsWith(lowerInput.slice(0, 4))) {
+                return WORD_MAP[key];
+            }
+        }
+        // Inclusion check for longer words
+        if (lowerInput.length > 5 && (lowerKey.includes(lowerInput) || lowerInput.includes(lowerKey))) {
+            return WORD_MAP[key];
+        }
+    }
+
+    // Default Fallback
     const fallbacks = ["🚀", "🌟", "🎨", "🧩", "🎮", "🦄", "🌈", "🎈", "🔮", "💡"];
-    // Deterministic hash based on word length to pick a stable fallback
     const idx = word.length % fallbacks.length;
     return fallbacks[idx];
 }
@@ -520,10 +540,10 @@ function renderVowels(words) {
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // BIGGER BLANKS as requested
-                const widthClass = solution.length > 9 ? 'w-14 mx-2' : 'w-20 mx-3';
+                // CLASSIC BLANK LINE STYLE: Transparent bg, dark bottom border
+                const widthClass = solution.length > 9 ? 'w-12 mx-1' : 'w-20 mx-3';
                 const s = document.createElement('span');
-                s.className = `${widthClass} h-14 border-b-4 border-indigo-500 bg-indigo-100 rounded-lg inline-block align-middle shrink-0 flex items-end justify-center`;
+                s.className = `${widthClass} h-12 border-b-4 border-slate-800 bg-transparent rounded-none inline-block align-middle shrink-0 flex items-end justify-center`;
                 s.innerHTML = "&nbsp;";
                 display.appendChild(s);
             } else {
