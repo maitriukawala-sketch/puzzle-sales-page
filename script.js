@@ -506,10 +506,11 @@ function renderVowels(words) {
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // Adaptive blank size
-                const widthClass = solution.length > 9 ? 'w-8 mx-1' : 'w-12 mx-2';
+                // Adaptive blank size with VISIBLE background to ensure user sees the "puzzle" aspect
+                const widthClass = solution.length > 9 ? 'w-10 mx-1' : 'w-14 mx-2';
                 const s = document.createElement('span');
-                s.className = `${widthClass} border-b-4 border-slate-400 h-10 inline-block mb-1`;
+                // Added bg-indigo-50 and increased border visibility
+                s.className = `${widthClass} h-12 border-b-4 border-indigo-400 bg-indigo-50 rounded-lg inline-block align-middle`;
                 display.appendChild(s);
             } else {
                 display.appendChild(document.createTextNode(c));
