@@ -456,54 +456,6 @@ function generatePuzzle() {
     }
 }
 
-function renderVowels(words) {
-    elements.cardTitle.innerText = "Vowel Vanisher";
-    const container = document.createElement('div');
-    // Revert to 2-column grid to efficiently pack small words
-    container.className = "grid grid-cols-2 gap-x-6 gap-y-6 w-full mt-6 px-4";
-    const vArr = ['A', 'E', 'I', 'O', 'U', 'Y'];
-    words.forEach((word, i) => {
-        const solution = word.toUpperCase();
-        let chars = solution.split('');
-        let vIdx = chars.map((c, idx) => vArr.includes(c) ? idx : -1).filter(idx => idx !== -1);
-        let maskProb = currentState.ageGroup === '5-7' ? 0.3 : (currentState.ageGroup === '8-10' ? 0.6 : 0.95);
-        let maskCount = Math.max(1, Math.ceil(vIdx.length * maskProb));
-        if (maskCount >= vIdx.length && vIdx.length > 1 && currentState.ageGroup !== '11-13') maskCount = vIdx.length - 1;
-        let toMask = vIdx.sort(() => 0.5 - Math.random()).slice(0, maskCount);
-
-        const wrap = document.createElement('div');
-
-        // STRICT RULE: If word > 4 letters, use FULL WIDTH (col-span-2).
-        // If word <= 4 letters (e.g. CAT, DOG), use HALF WIDTH (col-span-1).
-        const isBigWord = solution.length > 4;
-
-        wrap.className = `bg-white p-4 rounded-[20px] border-2 border-slate-100 shadow-sm flex items-center gap-4 ${isBigWord ? 'col-span-2' : 'col-span-1'}`;
-
-        // Adjust icon size slightly for the smaller cards
-        wrap.innerHTML = `<span class="${isBigWord ? 'text-6xl min-w-[80px]' : 'text-5xl min-w-[60px]'} text-center">${WORD_MAP[word] || "✨"}</span>`;
-
-        const display = document.createElement('div');
-        // Flex spacing: 'justify-start' for big words to read left-to-right, 'justify-center' for small words to look balanced.
-        display.className = `flex-1 ${isBigWord ? 'text-4xl px-8 py-3 justify-start' : 'text-3xl px-4 py-2 justify-center'} font-black text-slate-800 tracking-widest flex flex-wrap items-center min-h-[5rem] bg-slate-50 rounded-xl`;
-
-        chars.forEach((c, idx) => {
-            if (toMask.includes(idx)) {
-                // Adjust blank line size based on layout too
-                const widthClass = isBigWord ? 'w-12 mx-2' : 'w-10 mx-1';
-                const s = document.createElement('span');
-                s.className = `${widthClass} border-b-4 border-slate-400 h-10 inline-block mb-1`;
-                display.appendChild(s);
-            } else {
-                display.appendChild(document.createTextNode(c));
-            }
-        });
-        wrap.appendChild(display);
-        container.appendChild(wrap);
-        addAnswerItem(`${i + 1}. ${solution}`);
-    });
-    elements.cardContent.appendChild(container);
-}
-
 function renderScramble(words) {
     elements.cardTitle.innerText = "Word Scramble";
     const container = document.createElement('div');
