@@ -473,6 +473,19 @@ function renderScramble(words) {
     elements.cardContent.appendChild(container);
 }
 
+// Helper to get icon or fallback
+function getIcon(word) {
+    if (WORD_MAP[word]) return WORD_MAP[word];
+    // Specific heuristics for common typos or plurals
+    if (word.toLowerCase().endsWith('s') && WORD_MAP[word.slice(0, -1)]) return WORD_MAP[word.slice(0, -1)];
+
+    // Rotating fallback icons so it's not always sparkles
+    const fallbacks = ["🚀", "🌟", "🎨", "🧩", "🎮", "🦄", "🌈", "🎈", "🔮", "💡"];
+    // Deterministic hash based on word length to pick a stable fallback
+    const idx = word.length % fallbacks.length;
+    return fallbacks[idx];
+}
+
 function renderVowels(words) {
     elements.cardTitle.innerText = "Vowel Vanisher";
     const container = document.createElement('div');
@@ -492,8 +505,9 @@ function renderVowels(words) {
         // Simple, full-width container for everyone
         wrap.className = `bg-white p-4 rounded-[24px] border-2 border-slate-100 shadow-sm flex items-center gap-6`;
 
-        // Static Icon
-        wrap.innerHTML = `<span class="text-6xl min-w-[80px] text-center">${WORD_MAP[word] || "✨"}</span>`;
+        // Dynamic Icon Logic
+        const iconChar = getIcon(word);
+        wrap.innerHTML = `<span class="text-6xl min-w-[80px] text-center">${iconChar}</span>`;
 
         // Adaptive Font Sizing to ensure "whole word visible"
         let fontSize = "text-5xl";
@@ -506,12 +520,10 @@ function renderVowels(words) {
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
-                // Adaptive blank size with VISIBLE background and prevent shrinking
-                // Added shrink-0 to prevent collapse in flex container
-                // Added innerHTML "&nbsp;" so it has physical content
-                const widthClass = solution.length > 9 ? 'w-10 mx-1' : 'w-14 mx-2';
+                // BIGGER BLANKS as requested
+                const widthClass = solution.length > 9 ? 'w-14 mx-2' : 'w-20 mx-3';
                 const s = document.createElement('span');
-                s.className = `${widthClass} h-12 border-b-4 border-indigo-500 bg-indigo-100 rounded-lg inline-block align-middle shrink-0 flex items-end justify-center`;
+                s.className = `${widthClass} h-14 border-b-4 border-indigo-500 bg-indigo-100 rounded-lg inline-block align-middle shrink-0 flex items-end justify-center`;
                 s.innerHTML = "&nbsp;";
                 display.appendChild(s);
             } else {
