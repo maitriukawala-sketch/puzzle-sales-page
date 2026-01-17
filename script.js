@@ -406,29 +406,94 @@ function classifyTheme(input) {
 }
 
 function generatePuzzle() {
-    const rawInput = elements.puzzleInput.value;
-    const theme = classifyTheme(rawInput);
+    const rawInput = elements.puzzleInput.value.trim();
+    let words = [];
+    let theme = "Custom";
+
+    // 1. Check if input is a direct Topic Match (e.g. "Space", "Animals")
+    const topicMatch = Object.keys(TOPICS).find(t => t.toLowerCase() === rawInput.toLowerCase());
+
+    if (topicMatch) {
+        theme = topicMatch;
+        let level = "Explorer";
+        if (currentState.ageGroup === '8-10') level = "Hero";
+        if (currentState.ageGroup === '11-13') level = "Master";
+        words = [...TOPICS[theme][level]];
+    } else if (rawInput.length > 0) {
+        // 2. Use User Input Strictly (Comma separated)
+        words = rawInput.split(',').map(w => w.trim()).filter(w => w);
+        if (words.length === 0) words = [...TOPICS["Animals"]["Explorer"]];
+    } else {
+        // 3. Default Fallback
+        theme = "Animals";
+        let level = "Explorer";
+        if (currentState.ageGroup === '8-10') level = "Hero";
+        if (currentState.ageGroup === '11-13') level = "Master";
+        words = [...TOPICS[theme][level]];
+    }
+
     currentState.theme = theme;
-    let level = "Explorer";
-    if (currentState.ageGroup === '8-10') level = "Hero";
-    if (currentState.ageGroup === '11-13') level = "Master";
-    let words = [...TOPICS[theme][level]];
     elements.cardContent.innerHTML = "";
     elements.ansContent.innerHTML = "";
     if (elements.storyTitle) elements.storyTitle.innerText = STORY_CONTEXT[currentState.type][currentState.ageGroup];
     if (elements.ansCardInfo) elements.ansCardInfo.innerText = `${theme.toUpperCase()} MISSION KEY`;
+
     const mascotBox = document.querySelector('.mascot-circle');
-    if (mascotBox) {
+    if (mascotBox && words.length > 0) {
+        // Try to find an icon for the first word, or default
         const firstWord = words[0];
-        mascotBox.innerText = WORD_MAP[firstWord] || "🦊";
+        // Simple heuristic to find a mapped word in the user's list
+        const iconWord = words.find(w => WORD_MAP[w]) || firstWord;
+        mascotBox.innerText = WORD_MAP[iconWord] || "🦊";
     }
+
     switch (currentState.type) {
         case 'scramble': renderScramble(words); break;
         case 'vowels': renderVowels(words); break;
         case 'spycode': renderSpyCode(words); break;
         case 'wordsearch': renderWordSearch(words); break;
-        case 'riddle': renderRiddles(theme, level); break;
+        case 'riddle': renderRiddles(theme, "Explorer"); break; // Riddles rely on theme for sentences
     }
+}
+
+function renderVowels(words) {
+    elements.cardTitle.innerText = "Vowel Vanisher";
+    const container = document.createElement('div');
+    container.className = "grid grid-cols-2 gap-x-8 gap-y-8 w-full mt-8";
+    const vArr = ['A', 'E', 'I', 'O', 'U', 'Y'];
+    words.forEach((word, i) => {
+        const solution = word.toUpperCase();
+        let chars = solution.split('');
+        let vIdx = chars.map((c, idx) => vArr.includes(c) ? idx : -1).filter(idx => idx !== -1);
+        let maskProb = currentState.ageGroup === '5-7' ? 0.3 : (currentState.ageGroup === '8-10' ? 0.6 : 0.95);
+        let maskCount = Math.max(1, Math.ceil(vIdx.length * maskProb));
+        if (maskCount >= vIdx.length && vIdx.length > 1 && currentState.ageGroup !== '11-13') maskCount = vIdx.length - 1;
+        let toMask = vIdx.sort(() => 0.5 - Math.random()).slice(0, maskCount);
+        const wrap = document.createElement('div');
+        // Compact flex row layout
+        wrap.className = "bg-white p-4 rounded-[20px] border-2 border-slate-100 shadow-sm flex items-center gap-4";
+
+        // Static Icon
+        wrap.innerHTML = `<span class="text-5xl min-w-[60px] text-center">${WORD_MAP[word] || "✨"}</span>`;
+
+        const display = document.createElement('div');
+        // Allow wrapping for very long words, centered text
+        display.className = "flex-1 text-3xl font-black text-slate-800 tracking-wide flex flex-wrap items-center justify-center min-h-[4rem] bg-slate-50 rounded-xl px-4 py-2";
+        chars.forEach((c, idx) => {
+            if (toMask.includes(idx)) {
+                // Reduced width to w-12 (48px) and margin to mx-1 to prevent overcrowding
+                const s = document.createElement('span');
+                s.className = "w-12 border-b-4 border-slate-400 mx-1 h-8 inline-block mb-1";
+                display.appendChild(s);
+            } else {
+                display.appendChild(document.createTextNode(c));
+            }
+        });
+        wrap.appendChild(display);
+        container.appendChild(wrap);
+        addAnswerItem(`${i + 1}. ${solution}`);
+    });
+    elements.cardContent.appendChild(container); // Fixed: ensure container is appended!
 }
 
 function renderScramble(words) {
