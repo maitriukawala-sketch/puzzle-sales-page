@@ -572,7 +572,8 @@ function renderRiddles(theme, level) {
 
         // Show Decoder Key (Essential for kids to solve it!)
         const keyBox = document.createElement('div');
-        keyBox.className = "bg-slate-100 p-4 rounded-xl border-2 border-slate-200 flex flex-wrap justify-center gap-2 mb-8";
+        // Changed to Grid layout to prevent cutting off (7 cols mobile, 13 cols desktop)
+        keyBox.className = "bg-slate-100 p-4 rounded-xl border-2 border-slate-200 grid grid-cols-7 md:grid-cols-13 gap-2 mb-8";
         alpha.split('').forEach(char => {
             keyBox.innerHTML += `<div class="flex flex-col items-center bg-white border border-slate-300 rounded px-2 py-1 min-w-[30px]"><span class="text-xs text-slate-400 font-bold">${char}</span><span class="text-lg font-black text-slate-800">${cipher[char]}</span></div>`;
         });
