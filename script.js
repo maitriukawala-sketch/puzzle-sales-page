@@ -529,7 +529,7 @@ function renderWordSearch(words) {
             let over = false;
             if (r + dir.r * s.length < 0 || r + dir.r * s.length >= size || c + dir.c * s.length < 0 || c + dir.c * s.length >= size) over = true;
             if (!over) { for (let i = 0; i < s.length; i++) { const ch = grid[r + i * dir.r][c + i * dir.c]; if (ch !== '' && ch !== s[i]) over = true; } }
-            if (!over) { for (let i = 0; i < s.length; i++) grid[r + i * dir.r][c + i * dir.c] = s[i]; placed = true; sol.push(s); }
+            if (!over) { for (let i = 0; i < s.length; i++) grid[r + i * dir.r][c + i * dir.c] = s[i]; placed = true; sol.push(w); }
             att++;
         }
     });
@@ -544,8 +544,8 @@ function renderWordSearch(words) {
     const list = document.createElement('div');
     list.className = "mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4 w-full px-12";
     sol.forEach(w => {
-        list.innerHTML += `<div class="bg-indigo-50 px-4 py-2 rounded-full text-indigo-600 font-extrabold text-sm text-center flex items-center justify-center gap-2"><span class="text-xl">${WORD_MAP[w] || "🔹"}</span><span>${w}</span></div>`;
-        addAnswerItem(w);
+        list.innerHTML += `<div class="bg-indigo-50 px-4 py-2 rounded-full text-indigo-600 font-extrabold text-sm text-center flex items-center justify-center gap-2"><span class="text-xl">${WORD_MAP[w] || "🔹"}</span><span>${w.toUpperCase()}</span></div>`;
+        addAnswerItem(w.toUpperCase());
     });
     elements.cardContent.appendChild(gEl);
     elements.cardContent.appendChild(list);
