@@ -265,7 +265,7 @@ const WORD_MAP = {
     // Ocean
     "Fish": "🐟", "Crab": "🦀", "Seal": "🐟", "Blue": "🔵", "Wave": "🌊", "Sand": "🏖️", "Shell": "🐚",
     "Turtle": "🐢", "Whale": "🐋", "Coral": "🐚", "Shark": "🦈", "Shrimp": "🦐", "Lobster": "🦞", "Trench": "🕳️",
-    "Seahorse": "🦄", "Jellyfish": "🐙", "Submarine": "🚢", "Octopus": "🐙", "Plankton": "🦠", "Anemone": "🐚", "Manatee": "�",
+    "Seahorse": "🦄", "Jellyfish": "🐙", "Submarine": "🚢", "Octopus": "🐙", "Plankton": "🦠", "Anemone": "🐚", "Manatee": "🐋",
     // Animals
     "Lion": "🦁", "Tiger": "🐯", "Bear": "🐻", "Frog": "🐸", "Duck": "🦆", "Cat": "🐱", "Bird": "🐦",
     "Zebra": "🦓", "Giraffe": "🦒", "Monkey": "🐒", "Cheetah": "🐆", "Dolphin": "🐬", "Penguin": "🐧", "Panda": "🐼",
@@ -276,8 +276,8 @@ const WORD_MAP = {
     "Chameleon": "🦎", "Rainforest": "🌲", "Tarantula": "🕷️", "Orangutan": "🐒", "Chimpanzee": "🐒", "Canopy": "🌲", "Monsoon": "🌧️",
     // Dinosaurs
     "Egg": "🥚", "Jaw": "🦷", "Bone": "🦴", "Claw": "🐾", "Tail": "Rex", "Foot": "🦶", "Roar": "🦁",
-    "Fossil": "🐚", "Raptor": "🐊", "Spike": "🌵", "Hunter": "🏹", "Nest": "�", "King": "👑",
-    "Triceratops": "🐊", "Stegosaurus": "🐊", "Jurassic": "🌴", "Pterodactyl": "�", "Herbivore": "🍃", "Carnivore": "🥩", "Mammoth": "🐘",
+    "Fossil": "🐚", "Raptor": "🐊", "Spike": "🌵", "Hunter": "🏹", "Nest": "🥚", "King": "👑",
+    "Triceratops": "🐊", "Stegosaurus": "🐊", "Jurassic": "🌴", "Pterodactyl": "🦅", "Herbivore": "🍃", "Carnivore": "🥩", "Mammoth": "🐘",
     // Food
     "Pie": "🥧", "Jam": "🍓", "Cake": "🍰", "Milk": "🥛", "Pear": "🍐", "Bun": "🍞",
     "Apple": "🍎", "Pizza": "🍕", "Cheese": "🧀", "Cookie": "🍪", "Banana": "🍌", "Burger": "🍔", "Donut": "🍩",
@@ -375,7 +375,7 @@ const WORD_MAP = {
     "Cup": "☕", "Pan": "🍳", "Fork": "🍴", "Bowl": "🍜", "Spoon": "🥄", "Pot": "🍲", "Knife": "🔪", "Whisk": "🥣", "Grater": "🧀", "Peeler": "🥔", "Toaster": "🍞", "Kettle": "☕", "Ladle": "🥣", "Spatula": "🍳", "Colander": "🍝", "Blender": "🥤", "Processor": "⚙️", "Strainer": "🍝", "Rollingpin": "🥖", "Utensils": "🍴", "Cookware": "🥘",
     "Pear": "🍐", "Kiwi": "🥝", "Fig": "🌰", "Lime": "🍋", "Plum": "🍑", "Grape": "🍇", "Mango": "🥭", "Peach": "🍑", "Cherry": "🍒", "Berry": "🍓", "Melon": "🍈", "Orange": "🍊", "Pomegranate": "🔴", "Raspberry": "🍓", "Apricot": "🍑", "Tangerine": "🍊", "Nectarine": "🍑", "Grapefruit": "🍊", "Avocado": "🥑",
     "Corn": "🌽", "Pea": "🟢", "Bean": "🌱", "Yam": "🍠", "Kale": "🥬", "Leek": "🧅", "Beet": "🍠", "Carrot": "🥕", "Potato": "🥔", "Tomato": "🍅", "Onion": "🧅", "Garlic": "🧄", "Radish": "🍠", "Pepper": "🌶️", "Cauliflower": "🥦", "Eggplant": "🍆", "Zucchini": "🥒", "Asparagus": "🥦", "Spinach": "🍃", "Artichoke": "🥬",
-    "Soap": "🧼", "Comb": "💇", "Tooth": "🦷", "Face": "😀", "Bath": "🛁", "Towel": "🧖", "Shower": "🚿", "Lotion": "🧴", "Cream": "🧴", "Hygiene": "🧼", "Toothpaste": "�", "Grooming": "💇", "Wardrobe": "👗", "Breakfast": "🥞", "Refresh": "🚿",
+    "Soap": "🧼", "Comb": "💇", "Tooth": "🦷", "Face": "😀", "Bath": "🛁", "Towel": "🧖", "Shower": "🚿", "Lotion": "🧴", "Cream": "🧴", "Hygiene": "🧼", "Toothpaste": "🦷", "Grooming": "💇", "Wardrobe": "👗", "Breakfast": "🥞", "Refresh": "🚿",
     "Icon": "📱", "App": "📱", "Web": "🌐", "Link": "🔗", "Code": "💻", "Screen": "🖥️", "Laptop": "💻", "Tablet": "📱", "Battery": "🔋", "Signal": "📶", "Mouse": "🖱️", "Camera": "📷", "Wifi": "📶", "Programming": "💻", "Software": "💾", "Algorithm": "🧮",
     "Tape": "📏", "Nut": "🔩", "Bolt": "🔩", "Wrench": "🔧", "Pliers": "🔧", "Screws": "🔩", "Level": "📐", "Drill": "🔫", "Measurement": "📏", "Carpentry": "🔨", "Equipment": "🧰", "Fastener": "🔩", "Assembly": "🏗️", "Hardware": "🔩",
     "Shop": "🏪", "Sign": "🛑", "Bank": "🏦", "Mall": "🛍️", "Street": "🛣️", "Bridge": "🌉", "Market": "🏪", "Office": "🏢", "Subway": "🚇", "Skyscraper": "🏙️", "Intersection": "🚦", "Community": "👥", "Pedestrian": "🚶", "Neighborhood": "🏡", "Pharmacy": "💊", "Traffic": "🚗",
