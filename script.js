@@ -587,7 +587,9 @@ function renderScramble(words) {
         do { scrambled = solution.split('').sort(() => 0.5 - Math.random()).join(''); } while (scrambled === solution && solution.length > 1);
         const row = document.createElement('div');
         row.className = "flex items-center gap-12";
-        row.innerHTML = `<div class="flex-1 flex items-center justify-start gap-8"><span class="text-6xl">${WORD_MAP[word] || "✨"}</span><span class="text-slate-800 font-bold italic text-4xl tracking-widest">${scrambled}</span></div><div class="flex-1 h-14 border-b-4 border-slate-300 border-dashed relative top-2"></div>`;
+        // Use getIcon(word) instead of WORD_MAP[word] to enable fuzzy matching/fallbacks
+        const iconChar = getIcon(word);
+        row.innerHTML = `<div class="flex-1 flex items-center justify-start gap-8"><span class="text-6xl">${iconChar}</span><span class="text-slate-800 font-bold italic text-4xl tracking-widest">${scrambled}</span></div><div class="flex-1 h-14 border-b-4 border-slate-300 border-dashed relative top-2"></div>`;
         container.appendChild(row);
         addAnswerItem(`${i + 1}. ${scrambled} = ${solution}`);
     });
