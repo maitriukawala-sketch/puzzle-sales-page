@@ -154,6 +154,106 @@ const TOPICS = {
         "Explorer": ["Vet", "Cook", "Cop", "Doc", "Chef", "Boss", "Mail"],
         "Hero": ["Nurse", "Pilot", "Farmer", "Baker", "Actor", "Artist", "Fire"],
         "Master": ["Scientist", "Engineer", "Architect", "Musician", "Lawyer", "Business", "Designer"]
+    },
+    "Amusement Park": {
+        "Explorer": ["Ride", "Fun", "Fast", "Game", "Pop", "Park", "Tent"],
+        "Hero": ["Coaster", "Ticket", "Ferris", "Cotton", "Candy", "Prize", "Slide"],
+        "Master": ["Rollercoaster", "Carousel", "Excitement", "Midway", "Carnival", "Souvenir", "Thrill"]
+    },
+    "Gardening": {
+        "Explorer": ["Dirt", "Seed", "Pot", "Hoe", "Bud", "Sun", "Dig"],
+        "Hero": ["Shovel", "Trowel", "Sprout", "Gloves", "Water", "Plant", "Roots"],
+        "Master": ["Horticulture", "Greenhouse", "Fertilizer", "Cultivate", "Harvest", "Pesticide", "Organic"]
+    },
+    "Archaeology": {
+        "Explorer": ["Dig", "Old", "Bone", "Pot", "Dirt", "Map", "Rock"],
+        "Hero": ["Fossil", "Shovel", "Relic", "Ancient", "Ruins", "Brush", "Site"],
+        "Master": ["Artifact", "Civilization", "Expedition", "Excavate", "Hieroglyphics", "Pyramid", "Pharaoh"]
+    },
+    "Camping": {
+        "Explorer": ["Tent", "Fire", "Bag", "Woods", "Log", "Hike", "Lake"],
+        "Hero": ["Smores", "Lantern", "Compass", "Trail", "Cooler", "Forest", "Gear"],
+        "Master": ["Wilderness", "Backpack", "Navigation", "Survival", "Expedition", "Sleeping", "Terrain"]
+    },
+    "Construction": {
+        "Explorer": ["Saw", "Hammer", "Nail", "Wood", "Hard", "Hat", "Glue"],
+        "Hero": ["Driller", "Shovel", "Loader", "Cement", "Bricks", "Crane", "Blueprint"],
+        "Master": ["Architecture", "Engineering", "Scaffolding", "Excavator", "Foundation", "Steel", "Structure"]
+    },
+    "Invention": {
+        "Explorer": ["Idea", "Plan", "New", "Tool", "Gear", "Lamp", "Work"],
+        "Hero": ["Create", "Device", "Engine", "Patent", "Prototype", "Sketch", "Light"],
+        "Master": ["Innovation", "Laboratory", "Discovery", "Experiment", "Technology", "Ingenuity", "Pioneer"]
+    },
+    "Geography": {
+        "Explorer": ["Map", "Land", "Sea", "Hill", "Peak", "Flag", "Road"],
+        "Hero": ["Island", "River", "Desert", "Valley", "Coast", "Border", "Globe"],
+        "Master": ["Continent", "Peninsula", "Archipelago", "Latitude", "Longitude", "Topography", "Equator"]
+    },
+    "Astronomy": {
+        "Explorer": ["Sun", "Moon", "Star", "Sky", "Dark", "Glow", "Rock"],
+        "Hero": ["Planet", "Meteor", "Comet", "Solar", "System", "Orbit", "Crater"],
+        "Master": ["Constellation", "Galaxy", "Observatory", "Supernova", "Lightyear", "Telescope", "Blackhole"]
+    },
+    "Detective": {
+        "Explorer": ["Spy", "Clue", "Key", "Note", "Hat", "Case", "Bag"],
+        "Hero": ["Search", "Finger", "Print", "Secret", "Agent", "Badge", "Trace"],
+        "Master": ["Investigation", "Evidence", "Interrogate", "Mystery", "Undercover", "Suspicious", "Solve"]
+    },
+    "Mythology": {
+        "Explorer": ["Zeus", "God", "Wing", "Gold", "Hero", "Fire", "King"],
+        "Hero": ["Dragon", "Pegasus", "Phoenix", "Triton", "Legend", "Statue", "Temple"],
+        "Master": ["Labyrinth", "Centaur", "Minotaur", "Olympian", "Prophecy", "Hercules", "Immortality"]
+    },
+    "Kitchen Tools": {
+        "Explorer": ["Cup", "Pan", "Fork", "Bowl", "Spoon", "Pot", "Knife"],
+        "Hero": ["Whisk", "Grater", "Peeler", "Toaster", "Kettle", "Ladle", "Spatula"],
+        "Master": ["Colander", "Blender", "Processor", "Strainer", "Rollingpin", "Utensils", "Cookware"]
+    },
+    "Fruit Basket": {
+        "Explorer": ["Pear", "Kiwi", "Fig", "Lime", "Plum", "Grape", "Apple"],
+        "Hero": ["Banana", "Mango", "Peach", "Cherry", "Berry", "Melon", "Orange"],
+        "Master": ["Pomegranate", "Raspberry", "Apricot", "Tangerine", "Nectarine", "Grapefruit", "Avocado"]
+    },
+    "Vegetable Garden": {
+        "Explorer": ["Corn", "Pea", "Bean", "Yam", "Kale", "Leek", "Beet"],
+        "Hero": ["Carrot", "Potato", "Tomato", "Onion", "Garlic", "Radish", "Pepper"],
+        "Master": ["Cauliflower", "Eggplant", "Zucchini", "Asparagus", "Broccoli", "Spinach", "Artichoke"]
+    },
+    "Morning Routine": {
+        "Explorer": ["Soap", "Comb", "Bed", "Tooth", "Face", "Bath", "Sink"],
+        "Hero": ["Brush", "Towel", "Mirror", "Shower", "Pajamas", "Lotion", "Cream"],
+        "Master": ["Hygiene", "Toothpaste", "Grooming", "Wardrobe", "Breakfast", "Schedule", "Refresh"]
+    },
+    "Technology": {
+        "Explorer": ["Icon", "App", "Web", "Link", "Code", "Screen", "Bot"],
+        "Hero": ["Laptop", "Tablet", "Battery", "Signal", "Mouse", "Camera", "Wifi"],
+        "Master": ["Programming", "Processor", "Satellite", "Invention", "Software", "Algorithm", "Circuit"]
+    },
+    "Handyman": {
+        "Explorer": ["Saw", "Tape", "Glue", "Nut", "Bolt", "Tool", "Nail"],
+        "Hero": ["Hammer", "Wrench", "Pliers", "Screws", "Level", "Ruler", "Drill"],
+        "Master": ["Maintenance", "Measurement", "Carpentry", "Equipment", "Fastener", "Assembly", "Hardware"]
+    },
+    "City Life": {
+        "Explorer": ["Road", "Shop", "Bus", "Park", "Sign", "Bank", "Mall"],
+        "Hero": ["Street", "Bridge", "Market", "Library", "Museum", "Office", "Subway"],
+        "Master": ["Skyscraper", "Intersection", "Community", "Pedestrian", "Neighborhood", "Pharmacy", "Traffic"]
+    },
+    "Human Senses": {
+        "Explorer": ["Eye", "Ear", "Nose", "Skin", "Soft", "Loud", "Cold"],
+        "Hero": ["Sight", "Sound", "Smell", "Taste", "Touch", "Flavor", "Vision"],
+        "Master": ["Perception", "Fragrance", "Texture", "Auditory", "Sensory", "Olfactory", "Sensitive"]
+    },
+    "Money": {
+        "Explorer": ["Cent", "Coin", "Bill", "Bank", "Save", "Buy", "Cash"],
+        "Hero": ["Dollar", "Pocket", "Change", "Wallet", "Budget", "Spend", "Price"],
+        "Master": ["Investment", "Currency", "Allowance", "Transaction", "Interest", "Economy", "Purchase"]
+    },
+    "Emotions": {
+        "Explorer": ["Kind", "Help", "Give", "Love", "Glad", "Nice", "Share"],
+        "Hero": ["Friend", "Honest", "Polite", "Caring", "Listen", "Smile", "Gentle"],
+        "Master": ["Empathy", "Respectful", "Integrity", "Patience", "Gratitude", "Generous", "Compassion"]
     }
 };
 
