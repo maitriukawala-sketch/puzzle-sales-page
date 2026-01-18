@@ -828,7 +828,7 @@ async function exportToPng(target, filename) {
     const isT = elements.transparentToggle?.checked || false;
     try {
         const canvas = await html2canvas(target, {
-            scale: 2,
+            scale: 4, // High Resolution (4x) for Amazon KDP Printing (approx 300 DPI)
             backgroundColor: isT ? null : currentState.bgColor,
             onclone: (doc) => {
                 const p = doc.getElementById('puzzle-card'), a = doc.getElementById('answer-card');
