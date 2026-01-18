@@ -739,9 +739,12 @@ function renderWordSearch(words) {
         const d = document.createElement('div'); d.className = "ws-cell w-10 h-10 flex items-center justify-center font-bold text-lg bg-white border border-slate-50 rounded-lg"; d.innerText = char; gEl.appendChild(d);
     }));
     const list = document.createElement('div');
-    list.className = "mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4 w-full px-12";
+    // More open grid: 2 cols on mobile, 3 on desktop, with bigger gaps
+    list.className = "mt-12 grid grid-cols-2 lg:grid-cols-3 gap-6 w-full px-8";
     sol.forEach(w => {
-        list.innerHTML += `<div class="bg-indigo-50 px-4 py-2 rounded-full text-indigo-600 font-extrabold text-sm text-center flex items-center justify-center gap-2"><span class="text-xl">${WORD_MAP[w] || "🔹"}</span><span>${w.toUpperCase()}</span></div>`;
+        const icon = getIcon(w);
+        // Bigger buttons, more padding (py-3 px-6), cleaner look
+        list.innerHTML += `<div class="bg-indigo-50 px-6 py-3 rounded-full text-indigo-700 font-extrabold text-sm text-center flex items-center justify-center gap-3 shadow-sm border border-indigo-100"><span class="text-2xl">${icon}</span><span class="tracking-wide">${w.toUpperCase()}</span></div>`;
         addAnswerItem(w.toUpperCase());
     });
     elements.cardContent.appendChild(gEl);
