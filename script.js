@@ -455,17 +455,18 @@ function initElements() {
 
         ansCard: document.getElementById('answer-card'),
         ansContent: document.getElementById('ans-content'),
-        ansCardInfo: document.getElementById('ans-card-info')
+        ansCardInfo: document.getElementById('ans-card-info'),
+        customBgColor: document.getElementById('custom-bg-color')
     };
 }
 
 // --- Interaction Logic ---
 const STORY_CONTEXT = {
-    'scramble': { '5-7': '🕵️ Mission: Word Detective!', '8-10': '🧠 Word Cracking Elite!', '11-13': '🎖️ Lexical Commander Quest!' },
-    'vowels': { '5-7': '🅰️ The Great Vowel Hunt!', '8-10': '💨 Vowel Vanish Mystery!', '11-13': '🌪️ Complete Vowel Void!' },
-    'spycode': { '5-7': '🗝️ Secret Agent Academy!', '8-10': '🕵️ Top Secret Encryption!', '11-13': '🔐 Shadow Cipher Protocol!' },
-    'wordsearch': { '5-7': '🔍 Little Seeker Quest!', '8-10': '🔎 Hidden Master Search!', '11-13': '🎯 Radar Expert Mission!' },
-    'riddle': { '5-7': '🧚 Garden of Riddles!', '8-10': '🧩 Enigma Solver Squad!', '11-13': '🗿 Ancient Sage Challenge!' }
+    'scramble': { '5-7': 'Mission: Word Detective!', '8-10': 'Word Cracking Elite!', '11-13': 'Lexical Commander Quest!' },
+    'vowels': { '5-7': 'The Great Vowel Hunt!', '8-10': 'Vowel Vanish Mystery!', '11-13': 'Complete Vowel Void!' },
+    'spycode': { '5-7': 'Secret Agent Academy!', '8-10': 'Top Secret Encryption!', '11-13': 'Shadow Cipher Protocol!' },
+    'wordsearch': { '5-7': 'Little Seeker Quest!', '8-10': 'Hidden Master Search!', '11-13': 'Radar Expert Mission!' },
+    'riddle': { '5-7': 'Garden of Riddles!', '8-10': 'Enigma Solver Squad!', '11-13': 'Ancient Sage Challenge!' }
 };
 
 const MASCOT_MESSAGES = [
@@ -510,6 +511,12 @@ function setupEventListeners() {
     }
     if (elements.downloadBtn) elements.downloadBtn.onclick = () => exportToPng(elements.card, `puzzle-${currentState.type}`);
     if (elements.downloadAnsBtn) elements.downloadAnsBtn.onclick = () => exportToPng(elements.ansCard, `answer-key`);
+    if (elements.customBgColor) {
+        elements.customBgColor.oninput = (e) => {
+            currentState.bgColor = e.target.value;
+            if (elements.card) elements.card.style.backgroundColor = e.target.value;
+        };
+    }
 }
 
 function classifyTheme(input) {
@@ -578,11 +585,7 @@ function generatePuzzle() {
 
     const mascotBox = document.querySelector('.mascot-circle');
     if (mascotBox && words.length > 0) {
-        // Try to find an icon for the first word, or default
-        const firstWord = words[0];
-        // Simple heuristic to find a mapped word in the user's list
-        const iconWord = words.find(w => WORD_MAP[w]) || firstWord;
-        mascotBox.innerText = WORD_MAP[iconWord] || "🦊";
+        mascotBox.innerText = "🦊";
     }
 
     switch (currentState.type) {
@@ -603,10 +606,8 @@ function renderScramble(words) {
         let scrambled;
         do { scrambled = solution.split('').sort(() => 0.5 - Math.random()).join(''); } while (scrambled === solution && solution.length > 1);
         const row = document.createElement('div');
-        row.className = "flex items-center gap-12";
-        // Use getIcon(word) instead of WORD_MAP[word] to enable fuzzy matching/fallbacks
-        const iconChar = getIcon(word);
-        row.innerHTML = `<div class="flex-1 flex items-center justify-start gap-8"><span class="text-6xl">${iconChar}</span><span class="text-slate-800 font-bold italic text-4xl tracking-widest">${scrambled}</span></div><div class="flex-1 h-14 border-b-4 border-slate-300 border-dashed relative top-2"></div>`;
+        row.className = "puzzle-row w-full flex items-center gap-12";
+        row.innerHTML = `<div class="flex-1 flex items-center justify-inherit gap-8"><span contenteditable="true" class="text-slate-800 font-bold italic text-4xl tracking-widest">${scrambled}</span></div><div class="flex-1 h-14 border-b-4 border-slate-300 border-dashed relative top-2"></div>`;
         container.appendChild(row);
         addAnswerItem(`${i + 1}. ${scrambled} = ${solution}`);
     });
@@ -663,11 +664,9 @@ function renderVowels(words) {
 
         const wrap = document.createElement('div');
         // Simple, full-width container for everyone
-        wrap.className = `bg-white p-4 rounded-[24px] border-2 border-slate-100 shadow-sm flex items-center gap-6`;
+        wrap.className = `puzzle-row w-full bg-white p-4 rounded-[24px] border-2 border-slate-100 shadow-sm flex items-center gap-6`;
 
-        // Dynamic Icon Logic
-        const iconChar = getIcon(word);
-        wrap.innerHTML = `<span class="text-6xl min-w-[80px] text-center">${iconChar}</span>`;
+        wrap.innerHTML = ``;
 
         // Adaptive Font Sizing to ensure "whole word visible"
         let fontSize = "text-5xl";
@@ -676,7 +675,8 @@ function renderVowels(words) {
 
         const display = document.createElement('div');
         // flex-wrap is critical here. If it's STILL too long, it will wrap to the next line instead of cutting off.
-        display.className = `flex-1 ${fontSize} font-black text-slate-800 tracking-widest flex flex-wrap items-center justify-start min-h-[5rem] bg-slate-50 rounded-xl px-6 py-4`;
+        display.className = `flex-1 ${fontSize} font-black text-slate-800 tracking-widest flex flex-wrap items-center justify-inherit min-h-[5rem] bg-slate-50 rounded-xl px-6 py-4`;
+        display.contentEditable = "true";
 
         chars.forEach((c, idx) => {
             if (toMask.includes(idx)) {
@@ -716,9 +716,9 @@ function renderSpyCode(words) {
     if (hintCount === 0) keyBox.innerHTML = '<div class="col-span-4 text-center text-slate-400 italic">Top Secret: No Hints! Decode the whole logic.</div>';
     container.appendChild(keyBox);
     words.slice(0, 5).forEach(word => {
-        const row = document.createElement('div'); row.className = "flex flex-wrap gap-4 justify-center";
+        const row = document.createElement('div'); row.className = "puzzle-row flex flex-wrap gap-4 justify-inherit";
         word.toUpperCase().split("").forEach(char => {
-            row.innerHTML += `<div class="flex flex-col items-center gap-2"><div class="code-tile w-14 h-14 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center font-black text-2xl shadow-sm">${cipher[char]}</div><div class="w-14 h-14 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center bg-slate-50"></div></div>`;
+            row.innerHTML += `<div class="flex flex-col items-center gap-2"><div contenteditable="true" class="code-tile w-14 h-14 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center font-black text-2xl shadow-sm">${cipher[char]}</div><div class="w-14 h-14 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center bg-slate-50"></div></div>`;
         });
         container.appendChild(row);
     });
@@ -759,9 +759,8 @@ function renderWordSearch(words) {
     // More open grid: 2 cols on mobile, 3 on desktop, with bigger gaps
     list.className = "mt-12 grid grid-cols-2 lg:grid-cols-3 gap-6 w-full px-8";
     sol.forEach(w => {
-        const icon = getIcon(w);
         // Bigger buttons, more padding (py-3 px-6), cleaner look
-        list.innerHTML += `<div class="bg-indigo-50 px-6 py-3 rounded-full text-indigo-700 font-extrabold text-sm text-center flex items-center justify-center gap-3 shadow-sm border border-indigo-100"><span class="text-2xl">${icon}</span><span class="tracking-wide">${w.toUpperCase()}</span></div>`;
+        list.innerHTML += `<div class="bg-indigo-50 px-6 py-3 rounded-full text-indigo-700 font-extrabold text-sm text-center flex items-center justify-center gap-3 shadow-sm border border-indigo-100"><span class="tracking-wide">${w.toUpperCase()}</span></div>`;
         addAnswerItem(w.toUpperCase());
     });
     elements.cardContent.appendChild(gEl);
@@ -803,10 +802,10 @@ function renderRiddles(theme, level) {
 
             const item = document.createElement('div');
             // Reduced padding and margins for compact fit
-            item.className = "p-6 bg-blue-50 rounded-[24px] border-2 border-blue-100 shadow-sm relative";
+            item.className = "puzzle-row p-6 bg-blue-50 rounded-[24px] border-2 border-blue-100 shadow-sm relative";
             item.innerHTML = `
-                <div class="text-[10px] font-black text-blue-300 uppercase mb-2 tracking-widest">Message #${i + 1}</div>
-                <div class="text-xl font-bold text-slate-700 leading-normal tracking-wide mb-4 font-mono bg-white p-3 rounded-lg border border-blue-100 text-center">${encrypted}</div>
+                <div contenteditable="true" class="text-[10px] font-black text-blue-300 uppercase mb-2 tracking-widest">Message #${i + 1}</div>
+                <div contenteditable="true" class="text-xl font-bold text-slate-700 leading-normal tracking-wide mb-4 font-mono bg-white p-3 rounded-lg border border-blue-100 text-center">${encrypted}</div>
                 <div class="space-y-1">
                     <div class="flex gap-1 justify-center flex-wrap">
                        ${encrypted.split('').map(c =>
@@ -832,8 +831,8 @@ function renderRiddles(theme, level) {
 
     riddleList.slice(0, 3).forEach((rid, i) => {
         const item = document.createElement('div');
-        item.className = "p-10 bg-emerald-50 rounded-[40px] border-2 border-emerald-100 flex gap-8 items-center shadow-sm relative";
-        item.innerHTML = `<div class="text-6xl">🤔</div><div class="flex-1"><div class="text-xs font-black text-emerald-300 uppercase mb-2 tracking-widest">Riddle #${i + 1}</div><div class="text-2xl font-bold text-slate-700 leading-tight mb-6">${rid.q}</div><div class="border-b-4 border-dotted border-emerald-200 h-16 w-full italic text-emerald-100 flex items-end pb-2">Your answer...</div></div>`;
+        item.className = "puzzle-row p-10 bg-emerald-50 rounded-[40px] border-2 border-emerald-100 flex gap-8 items-center shadow-sm relative";
+        item.innerHTML = `<div class="flex-1 text-inherit"><div contenteditable="true" class="text-xs font-black text-emerald-300 uppercase mb-2 tracking-widest">Riddle #${i + 1}</div><div contenteditable="true" class="text-2xl font-bold text-slate-700 leading-tight mb-6">${rid.q}</div><div contenteditable="true" class="border-b-4 border-dotted border-emerald-200 h-16 w-full italic text-emerald-100 flex items-end pb-2">Your answer...</div></div>`;
         container.appendChild(item);
         addAnswerItem(`${i + 1}. ${rid.a}`);
     });
@@ -841,40 +840,196 @@ function renderRiddles(theme, level) {
 }
 
 function addAnswerItem(text) {
-    const p = document.createElement('div'); p.innerText = text; p.className = "py-2 border-b border-indigo-50 leading-tight text-sm font-bold";
-    if (elements.ansContent) elements.ansContent.appendChild(p);
+    const d = document.createElement('div');
+    d.className = "bg-white p-3 rounded-xl border-l-4 border-indigo-200 shadow-sm";
+    d.innerText = text;
+    if (elements.ansContent) elements.ansContent.appendChild(d);
 }
 
-async function exportToPng(target, filename) {
-    if (!target) return;
-    const isT = elements.transparentToggle?.checked || false;
+// --- Canva-like Drag & Resizable Image Engine ---
+let selectedElement = null;
+
+window.handleImageUpload = function (event) {
+    const files = event.target.files;
+    if (!files) return;
+
+    for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const container = document.createElement('div');
+            container.className = 'draggable-item';
+            container.style.width = '150px';
+            container.style.height = 'auto';
+            container.style.left = '100px';
+            container.style.top = '200px';
+            container.style.zIndex = '50';
+
+            const resizer = document.createElement('div');
+            resizer.className = 'resizer';
+
+            const removeBtn = document.createElement('div');
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = (ev) => {
+                ev.stopPropagation();
+                container.remove();
+            };
+
+            const image = document.createElement('img');
+            image.src = e.target.result;
+            image.style.width = '100%';
+            image.style.pointerEvents = 'none';
+
+            container.appendChild(image);
+            container.appendChild(resizer);
+            container.appendChild(removeBtn);
+
+            elements.card.appendChild(container);
+            makeElementDraggableAndResizable(container);
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
+function makeElementDraggableAndResizable(el) {
+    let isDragging = false;
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight, startLeft, startTop;
+
+    el.onmousedown = (e) => {
+        if (selectedElement) selectedElement.classList.remove('selected');
+        selectedElement = el;
+        el.classList.add('selected');
+
+        if (e.target.classList.contains('resizer')) {
+            isResizing = true;
+        } else {
+            isDragging = true;
+        }
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        const rect = el.getBoundingClientRect();
+        startWidth = rect.width;
+        startHeight = rect.height;
+        startLeft = parseInt(el.style.left || 0, 10);
+        startTop = parseInt(el.style.top || 0, 10);
+
+        // Bring to front on click
+        const allDraggables = document.querySelectorAll('.draggable-item');
+        allDraggables.forEach(d => d.style.zIndex = '50');
+        el.style.zIndex = '60';
+
+        const onMouseMove = (moveEvent) => {
+            if (isDragging) {
+                const dx = moveEvent.clientX - startX;
+                const dy = moveEvent.clientY - startY;
+                el.style.left = (startLeft + dx) + 'px';
+                el.style.top = (startTop + dy) + 'px';
+            } else if (isResizing) {
+                const dx = moveEvent.clientX - startX;
+                const newWidth = startWidth + dx;
+                if (newWidth > 30) {
+                    el.style.width = newWidth + 'px';
+                }
+            }
+        };
+
+        const onMouseUp = () => {
+            isDragging = false;
+            isResizing = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    };
+}
+
+// Global click to deselect
+document.addEventListener('mousedown', (e) => {
+    if (!e.target.closest('.draggable-item') && !e.target.closest('#image-upload')) {
+        if (selectedElement) {
+            selectedElement.classList.remove('selected');
+            selectedElement = null;
+        }
+    }
+});
+
+// --- Text Alignment Logic ---
+window.setAlignment = function (align) {
+    const content = document.getElementById('card-content');
+    if (!content) return;
+
+    // Use stretch to keep boxes full-width ("broad"), but move content inside
+    content.style.alignItems = 'stretch';
+    const containerAlignment = align === 'center' ? 'center' : (align === 'end' ? 'flex-end' : 'flex-start');
+
+    // Target specific puzzle rows/containers
+    const rows = content.querySelectorAll('.puzzle-row, .flex, .ws-grid, .grid');
+    rows.forEach(el => {
+        // Handle Flex containers (like Scramble rows and Vowel wraps)
+        if (el.classList.contains('flex')) {
+            el.style.justifyContent = containerAlignment;
+        }
+
+        // Handle WordSearch Grid
+        if (el.classList.contains('ws-grid')) {
+            el.style.margin = align === 'center' ? '0 auto' : (align === 'end' ? '0 0 0 auto' : '0 auto 0 0');
+        }
+
+        // Handle general text alignment
+        el.style.textAlign = align;
+    });
+
+    // Handle internal display boxes (like the light grey vowel box)
+    const displays = content.querySelectorAll('[class*="bg-slate-50"]');
+    displays.forEach(el => {
+        el.style.justifyContent = containerAlignment;
+        // If it's the inner vowel box, determine if it should shrink or stay fixed
+        // We'll keep it flexible but aligned
+        el.style.alignSelf = containerAlignment;
+    });
+
+    const textElements = content.querySelectorAll('span, p, div[contenteditable="true"]');
+    textElements.forEach(el => {
+        el.style.textAlign = align;
+    });
+}
+
+// --- Export Function ---
+async function exportToPng(element, filename) {
+    // Deselect before export
+    if (selectedElement) selectedElement.classList.remove('selected');
+
     try {
-        const canvas = await html2canvas(target, {
-            scale: 4, // High Resolution (4x) for Amazon KDP Printing (approx 300 DPI)
-            backgroundColor: isT ? null : currentState.bgColor,
+        const canvas = await html2canvas(element, {
+            backgroundColor: (elements.transparentToggle && elements.transparentToggle.checked) ? null : currentState.bgColor,
+            scale: 2,
+            useCORS: true,
+            logging: false,
             onclone: (doc) => {
-                const p = doc.getElementById('puzzle-card'), a = doc.getElementById('answer-card');
-                if (p) { p.style.boxShadow = "none"; p.style.borderRadius = "0"; }
-                if (a) { a.style.boxShadow = "none"; a.style.borderRadius = "0"; }
+                const card = doc.getElementById('puzzle-card');
+                if (card) {
+                    card.style.boxShadow = 'none';
+                    card.style.borderRadius = '0';
+                }
             }
         });
 
-        // Revert to Data URL for file:// protocol compatibility
-        // This fixes the "random filename" issue on local files
         const dataUrl = canvas.toDataURL('image/png');
-
         const link = document.createElement('a');
-        const safeName = filename.endsWith('.png') ? filename : `${filename}.png`;
-        link.download = safeName;
+        link.download = `${filename}.png`;
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
     } catch (e) {
-        console.error(e);
+        console.error("Export failed", e);
         alert("Download failed. Please try again.");
     }
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+init();
